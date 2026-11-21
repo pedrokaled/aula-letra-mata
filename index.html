@@ -65,6 +65,8 @@ button:focus-visible{outline:2px solid var(--gl);outline-offset:3px}
 .tools{position:absolute;right:16px;bottom:14px;display:flex;gap:8px;opacity:.35;transition:opacity .2s}
 .tools:hover,.tools:focus-within{opacity:1}
 .tools button{min-height:40px;font-size:14px;padding:0 14px}
+.dlg{position:absolute;right:16px;bottom:66px;width:min(320px,calc(100% - 32px));background:#141414;border:1px solid var(--line);border-radius:14px;padding:18px;display:flex;flex-direction:column;gap:10px;z-index:5}
+.dlg p{margin:0;color:var(--gray);font-size:14px}.dlg .row{display:flex;gap:8px;justify-content:flex-end}.dlg button{min-height:44px;font-size:15px}
 .toast{position:absolute;left:50%;top:18px;transform:translateX(-50%);background:#1a1a1a;border:1px solid var(--line);color:var(--gl);padding:8px 16px;border-radius:999px;font-size:14px}
 @media(max-width:820px){#tela{grid-template-columns:1fr;grid-template-rows:auto minmax(420px,1fr);height:auto;min-height:100vh}#tela aside{border-right:0;border-bottom:1px solid var(--line)}#qr{width:180px}}
 @media(prefers-reduced-motion:reduce){.w{transition:none}.w.new{animation:none}}
@@ -111,7 +113,15 @@ button:focus-visible{outline:2px solid var(--gl);outline-offset:3px}
     <div class="tools">
       <button class="ghost" id="fs" type="button">Tela cheia</button>
       <button class="ghost hidden" id="restore" type="button">Mostrar ocultas</button>
+      <button class="ghost" id="zerar" type="button">Zerar</button>
     </div>
+    <form class="dlg hidden" id="dlg" autocomplete="off">
+      <b>Zerar a nuvem?</b>
+      <p>Apaga todas as respostas desta sessão. Não dá para desfazer.</p>
+      <input id="cod" type="password" inputmode="numeric" placeholder="Código" aria-label="Código para zerar">
+      <div class="msg" id="dmsg" role="status"></div>
+      <div class="row"><button class="ghost" id="cancel" type="button">Cancelar</button><button class="btn" type="submit">Zerar</button></div>
+    </form>
   </div>
 </section>
 
@@ -2529,6 +2539,17 @@ if(!isTela){
     return out;
   }
   const ro=new ResizeObserver(()=>render());ro.observe(wrap);
+  $('zerar').addEventListener('click',()=>{$('dlg').classList.remove('hidden');$('dmsg').textContent='';$('cod').value='';$('cod').focus()});
+  $('cancel').addEventListener('click',()=>$('dlg').classList.add('hidden'));
+  $('dlg').addEventListener('submit',async e=>{
+    e.preventDefault();const m=$('dmsg');m.className='msg';m.textContent='Zerando…';
+    try{
+      const r=await fetch(SB_URL+'/rest/v1/rpc/zerar_nuvem',{method:'POST',headers:H,body:JSON.stringify({p_sessao:SESSAO,p_codigo:$('cod').value})});
+      if(!r.ok){m.className='msg err';m.textContent=r.status===401||r.status===403||r.status===400?'Código incorreto.':'Não consegui zerar. Tente de novo.';return}
+      groups.clear();hidden.clear();total=0;for(const el of els.values())el.remove();els.clear();
+      $('dlg').classList.add('hidden');render();
+    }catch(err){m.className='msg err';m.textContent='Sem conexão. Tente de novo.'}
+  });
   $('restore').addEventListener('click',()=>{hidden.clear();render()});
   $('fs').addEventListener('click',()=>{try{document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen()}catch(e){}});
   document.fonts&&document.fonts.ready.then(render);
