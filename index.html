@@ -45,19 +45,20 @@ textarea:focus{outline:2px solid var(--gold);border-color:transparent}
 .anon{margin-top:auto;padding-top:24px;color:#777;font-size:13px;text-align:center}
 
 /* projeção */
-#tela{min-height:100vh;display:grid;grid-template-columns:minmax(280px,27%) minmax(0,1fr);background:radial-gradient(ellipse at 70% 40%,#17140c 0%,#0a0a0a 60%)}
-#tela aside{padding:clamp(22px,3vw,48px);display:flex;flex-direction:column;border-right:1px solid var(--line)}
-#tela aside .verse{font-size:clamp(30px,2.8vw,50px)}
-.qrbox{margin-top:auto;display:flex;flex-direction:column;gap:10px}
-#qr{background:#fff;border-radius:14px;padding:12px;width:min(100%,230px);aspect-ratio:1}
+#tela{min-height:100vh;display:grid;grid-template-columns:min(44vw,calc(100vh - 120px)) minmax(0,1fr);background:radial-gradient(ellipse at 70% 40%,#17140c 0%,#0a0a0a 60%)}
+#tela aside{padding:28px;display:flex;flex-direction:column;justify-content:center;gap:14px;border-right:1px solid var(--line)}
+.scan{font:600 clamp(18px,1.6vw,26px) var(--fb);color:var(--gl);text-align:center}
+.board .verse{font-size:clamp(30px,2.6vw,48px);margin:.1em 0 0}
+.qrbox{display:flex;flex-direction:column;gap:12px;align-items:center}
+#qr{background:#fff;border-radius:18px;padding:4%;width:100%;aspect-ratio:1}
 #qr svg{display:block;width:100%;height:100%}
-.url{font:500 14px var(--fb);color:var(--gl);word-break:break-all}
-.stat{display:flex;align-items:baseline;gap:10px}.stat b{font:300 52px/1 var(--fd)}.stat span{color:var(--gray)}
-.board{position:relative;padding:clamp(22px,3vw,48px);display:flex;flex-direction:column;gap:clamp(12px,2.6vh,26px)}
-.board h2{font:500 clamp(22px,2vw,32px)/1.2 var(--fd);margin:0 0 6px;color:var(--gray);text-wrap:balance}
+.url{font:600 clamp(16px,1.4vw,24px) var(--fb);color:var(--ink);text-align:center;word-break:break-all}
+.stat{display:flex;align-items:baseline;justify-content:center;gap:10px}.stat b{font:300 52px/1 var(--fd)}.stat span{color:var(--gray)}
+.board{position:relative;padding:clamp(22px,3vw,48px);display:flex;flex-direction:column;gap:clamp(12px,2.4vh,26px)}
+.board h2{font:500 clamp(20px,1.7vw,28px)/1.2 var(--fb);margin:0 0 4px;color:var(--gray);text-wrap:balance}
 .row{display:grid;grid-template-columns:44px minmax(0,1fr) 92px;gap:14px;align-items:center;transition:opacity .5s}
 .row .l{width:40px;height:40px;border-radius:50%;border:1px solid var(--line);display:grid;place-items:center;font:600 17px var(--fb);color:var(--gl)}
-.row .txt{font-size:clamp(16px,1.4vw,24px);line-height:1.3;margin-bottom:7px}
+.row .txt{font-size:clamp(15px,1.25vw,22px);line-height:1.3;margin-bottom:7px}
 .track{height:clamp(14px,1.8vh,20px);background:#1a1a1a;border-radius:99px;overflow:hidden}
 .fill{height:100%;width:0;background:linear-gradient(90deg,#a07830,#e8c97a);border-radius:99px;transition:width .8s cubic-bezier(.2,.8,.2,1)}
 .num{text-align:right;white-space:nowrap}.num b{font:600 clamp(22px,1.9vw,30px) var(--fb)}.num small{display:block;color:var(--gray);font-size:13px}
@@ -82,7 +83,7 @@ textarea:focus{outline:2px solid var(--gold);border-color:transparent}
 .dlg p{margin:0;color:var(--gray);font-size:14px}
 .dlg input{font:500 18px var(--fb);color:var(--ink);background:#0d0d0d;border:1px solid #2a2a2a;border-radius:10px;padding:10px 12px}
 .dlg .r{display:flex;gap:8px;justify-content:flex-end}
-@media(max-width:860px){#tela{grid-template-columns:1fr}#tela aside{border-right:0;border-bottom:1px solid var(--line)}#qr{width:170px}.row{grid-template-columns:40px minmax(0,1fr) 70px}}
+@media(max-width:860px){#tela{grid-template-columns:1fr}#tela aside{padding:22px}#tela aside{border-right:0;border-bottom:1px solid var(--line)}#qr{width:min(100%,420px)}.row{grid-template-columns:40px minmax(0,1fr) 70px}}
 @media(prefers-reduced-motion:reduce){.fill,.row{transition:none}.panel li{animation:none}}
 </style>
 </head>
@@ -90,7 +91,7 @@ textarea:focus{outline:2px solid var(--gold);border-color:transparent}
 
 <main id="resp" class="hidden">
   <div class="ref">2 Coríntios 3:6</div>
-  <h1 class="verse">“A letra mata, mas o <em>espírito vivifica</em>.”</h1>
+  <h1 class="verse">“A letra mata, mas o <em>Espírito vivifica</em>.”</h1>
   <hr>
   <form id="f">
     <p class="q">O que Paulo quis dizer com isso?</p>
@@ -110,8 +111,7 @@ textarea:focus{outline:2px solid var(--gold);border-color:transparent}
 
 <section id="tela" class="hidden">
   <aside>
-    <div class="ref">2 Coríntios 3:6</div>
-    <h1 class="verse">“A letra mata, mas o <em>espírito vivifica</em>.”</h1>
+    <div class="scan">Aponte a câmera do celular</div>
     <div class="qrbox">
       <div id="qr" role="img" aria-label="QR Code para responder"></div>
       <div class="url" id="url"></div>
@@ -119,6 +119,8 @@ textarea:focus{outline:2px solid var(--gold);border-color:transparent}
     </div>
   </aside>
   <div class="board" id="board">
+    <div class="ref">2 Coríntios 3:6</div>
+    <h1 class="verse">“A letra mata, mas o <em>Espírito vivifica</em>.”</h1>
     <h2>O que Paulo quis dizer com isso?</h2>
     <div id="rows"></div>
     <div class="tools">
@@ -2453,7 +2455,7 @@ const isTela=location.hash==='#tela'||params.has('tela');
 const $=id=>document.getElementById(id);
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const OPTS=[
-  {l:'A',t:'Quanto mais a gente estuda Bíblia e teologia, mais a fé corre o risco de esfriar e virar só conhecimento.'},
+  {l:'A',t:'Quanto mais a gente estuda teologia, mais a fé corre o risco de esfriar e virar só conhecimento.'},
   {l:'B',t:'Obedecer à Palavra sem sentir a direção do Espírito no coração é cumprir letra morta.'},
   {l:'C',t:'No Antigo Testamento Deus agia pela Lei que condena; no Novo, passou a agir pelo Espírito que dá vida.'},
   {l:'D',t:'A Lei mostra o pecado, mas não dá poder para vencê-lo; só o Espírito transforma o coração.',right:true},
@@ -2488,7 +2490,7 @@ if(!isTela){
   $('tela').classList.remove('hidden');
   const link=location.origin+location.pathname+(SESSAO!=='aula'?'?s='+encodeURIComponent(SESSAO):'');
   $('url').textContent=link.replace(/^https?:\/\//,'');
-  try{const q=qrcode(0,'M');q.addData(link);q.make();$('qr').innerHTML=q.createSvgTag({cellSize:8,margin:0,scalable:true})}catch(e){$('qr').textContent='QR indisponível'}
+  try{const q=qrcode(0,'L');q.addData(link);q.make();$('qr').innerHTML=q.createSvgTag({cellSize:8,margin:0,scalable:true})}catch(e){$('qr').textContent='QR indisponível'}
 
   $('rows').innerHTML=OPTS.map((o,i)=>`<div class="row${o.right?' right':''}" id="r${i+1}"><span class="l">${o.l}</span><div><div class="txt">${esc(o.other?'Outra resposta':o.t)}<span class="badge">Resposta certa</span></div><div class="track"><div class="fill" id="b${i+1}"></div></div>${o.other?'<button class="ghost open" id="openOther" type="button">Ver respostas escritas</button>':''}</div><div class="num"><b id="n${i+1}">0%</b><small id="c${i+1}">0 votos</small></div></div>`).join('');
 
